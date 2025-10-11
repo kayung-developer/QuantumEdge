@@ -26,33 +26,36 @@ RUN pip install \
 
 # --- Stage 2: Final Production Stage ---
 # This stage builds the final, minimal image for deployment.
+
+# --- Stage 2: Final Production Stage ---
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install only the necessary RUNTIME system dependencies.
-# 'supervisor' for process management, 'libpq5' for the PostgreSQL client,
-# and 'netcat-openbsd' for the database readiness check.
-RUN apt-get update && apt-get install -y --no-install-recommends supervisor libpq5 netcat-openbsd && rm -rf /var/lib/apt/lists/*
+# Install only the necessary runtime dependencies.
+# We REMOVED netcat-openbsd as it's no longer needed.
+RUN apt-get update && apt-get install -y --no-install-recommends supervisor libpq5 && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user for security best practices
+# Create a non-root user
 RUN addgroup --system app && adduser --system --group app
 
-# Copy the pre-installed Python packages from the builder stage into the final image.
+# Copy pre-installed Python packages from the builder stage
 COPY --from=builder /usr/src/app/packages /usr/local/lib/python3.11/site-packages
 
-# Copy the entire application source code from the build context
+# Copy the application source code
 COPY . /app
 
-# Copy the supervisord configuration file to its required location
+# Copy the supervisord configuration file
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Set correct ownership for the application directory
+# --- NEW: Make our wait script executable ---
+RUN chmod +x /app/scripts/wait_for_postgres.py
+
+# Change ownership
 RUN chown -R app:app /app
 
 # Switch to the non-root user
 USER app
 
-# The command to execute when the container starts.
-# This starts the supervisord daemon, which in turn starts our Uvicorn and Celery processes.
+# Command to start supervisord
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
