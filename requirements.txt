@@ -1,0 +1,105 @@
+# ==============================================================================
+# QuantumLeap AI Trader - Production Dependencies
+# ==============================================================================
+# This file lists all the Python packages required to run ALL features of the
+# application, including the main server and the model training script.
+
+# --- Web Framework & Server ---
+fastapi
+uvicorn
+gunicorn
+
+# --- Database & ORM ---
+sqlalchemy[asyncio]
+asyncpg
+greenlet
+
+# --- Data Validation & Settings ---
+pydantic
+pydantic-settings
+email-validator
+
+# --- Security & Authentication ---
+firebase-admin
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt
+
+# --- Trading & Exchange APIs ---
+# ccxt is for primary data, tradingview-ta is for fallback data.
+ccxt
+tradingview-ta
+
+# --- AI & Machine Learning (for BOTH training and execution) ---
+numpy<2.0,>=1.23
+pandas
+scikit-learn  # A very stable and recent version
+xgboost
+#pandas-ta
+pandas-ta
+nltk
+vaderSentiment
+google-generativeai
+joblib
+# tvdatafeed
+
+kafka-python
+
+# --- Natural Language Processing (NLP) ---
+transformers
+torch # Already installed, but ensure it is
+# sentencepiece is often a dependency for tokenizers
+sentencepiece
+
+# --- News API Client ---
+newsapi-python
+torchvision
+torchaudio
+
+# Image Processing
+opencv-python-headless
+Pillow
+
+# Explainable AI
+shap
+
+# ML Lifecycle Management
+mlflow-skinny
+
+# --- Telegram Integration ---
+python-telegram-bot[job-queue]
+
+# --- Async Networking & Utilities ---
+aiohttp
+python-dotenv
+python-multipart
+slowapi
+
+cloudinary
+
+# --- Distributed Task Queue ---
+celery
+redis
+
+# --- Bayesian Optimization Library ---
+scikit-optimize
+hmmlearn
+
+# --- Large Language Model (LLM) Framework ---
+langchain
+langchain-community
+langchain-core
+
+# A powerful open-source LLM that can run locally (with a good GPU) or via an API
+# We'll use Ollama for local serving, so no direct library is needed here,
+# but we need the LangChain integration.
+langchain-ollama
+
+# For semantic search/embeddings
+sentence-transformers
+faiss-cpu # Vector database for similarity search
+
+simplefix
+PyPortfolioOpt
+web3
+aiokafka
