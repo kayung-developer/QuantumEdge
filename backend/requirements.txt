@@ -1,64 +1,46 @@
-# ==============================================================================
-# QuantumLeap AI Trader - Production Dependencies
-# ==============================================================================
-# This file lists all the Python packages required to run ALL features of the
-# application, including the main server and the model training script.
-
-# --- Web Framework & Server ---
+# --- Web Framework ---
 fastapi
-uvicorn
-gunicorn
+uvicorn[standard]
+# gunicorn # Optional for some deployment types, but good to have
 
 # --- Database & ORM ---
 sqlalchemy[asyncio]
 asyncpg
 greenlet
+alembic # For database migrations
 
-# --- Data Validation & Settings ---
+# --- Pydantic & Config ---
 pydantic
 pydantic-settings
 email-validator
 
-# --- Security & Authentication ---
+# --- Authentication & Security ---
 firebase-admin
 python-jose[cryptography]
 passlib[bcrypt]
-bcrypt
+cryptography
 
-# --- Trading & Exchange APIs ---
-# ccxt is for primary data, tradingview-ta is for fallback data.
+# --- Trading & Financial Libraries ---
 ccxt
-tradingview-ta
+MetaTrader5
+# We specify a known good version from PyPI. If it fails, we can use the git method.
+#pandas-ta>=0.3.14
 
-# --- AI & Machine Learning (for BOTH training and execution) ---
+# --- ML & AI LIBRARIES ---
+# Core ML/Data Science
+# CRITICAL: Pin NumPy to prevent conflicts with torch/onnxruntime
 numpy<2.0,>=1.23
 pandas
-scikit-learn  # A very stable and recent version
+scikit-learn
 xgboost
-#pandas-ta
-#pandas-ta
-nltk
-vaderSentiment
-google-generativeai
-joblib
-# tvdatafeed
 
-kafka-python
-
-# --- Natural Language Processing (NLP) ---
-transformers
-torch # Already installed, but ensure it is
-# sentencepiece is often a dependency for tokenizers
-sentencepiece
-
-# --- News API Client ---
-newsapi-python
-torchvision
-torchaudio
-
-# Image Processing
-opencv-python-headless
-Pillow
+# Deep Learning (PyTorch)
+# These lines MUST remain here. The Dockerfile's first pip install
+# will satisfy them from the CPU index, and the second pip install
+# will see they are already satisfied and skip them.
+torch==2.1.0
+torchvision==0.16.0
+torchaudio==2.1.0
 
 # Explainable AI
 shap
@@ -66,46 +48,21 @@ shap
 # ML Lifecycle Management
 mlflow-skinny
 
-# --- Telegram Integration ---
-python-telegram-bot[job-queue]
-
-# --- Async Networking & Utilities ---
-aiohttp
-python-dotenv
-python-multipart
-slowapi
-
-cloudinary
-
-# --- Distributed Task Queue ---
-celery
-redis
-
-# --- Bayesian Optimization Library ---
-scikit-optimize
-hmmlearn
-
-# --- Large Language Model (LLM) Framework ---
+# --- LLM & Conversational AI ---
 langchain
 langchain-community
 langchain-core
-
-# A powerful open-source LLM that can run locally (with a good GPU) or via an API
-# We'll use Ollama for local serving, so no direct library is needed here,
-# but we need the LangChain integration.
 langchain-ollama
-
-# For semantic search/embeddings
 sentence-transformers
-faiss-cpu # Vector database for similarity search
+faiss-cpu
 
-simplefix
-PyPortfolioOpt
-web3
-
+# --- Stream Processing & Async ---
+kafka-python
 aiokafka
+redis
+httpx
 
-
-
-
-
+# --- Protocols & Utilities ---
+simplefix
+docker
+watchfiles # For Celery hot-reloading in local dev
