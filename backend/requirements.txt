@@ -36,7 +36,7 @@ pandas
 scikit-learn  # A very stable and recent version
 xgboost
 #pandas-ta
-#pandas-ta>=0.3.14
+pandas-ta 0.4.71b0
 nltk
 vaderSentiment
 google-generativeai
@@ -104,5 +104,6 @@ PyPortfolioOpt
 web3
 
 aiokafka
+
 
 
