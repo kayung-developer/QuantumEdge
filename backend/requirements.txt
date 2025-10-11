@@ -22,7 +22,9 @@ cryptography
 
 # --- Trading & Financial Libraries ---
 ccxt
-MetaTrader5
+#MetaTrader5
+mt5linux
+
 # We specify a known good version from PyPI. If it fails, we can use the git method.
 #pandas-ta>=0.3.14
 
@@ -66,3 +68,4 @@ httpx
 simplefix
 docker
 watchfiles # For Celery hot-reloading in local dev
+
