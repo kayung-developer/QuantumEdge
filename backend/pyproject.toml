@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "auraquant_backend"
+version = "1.0.0"
+description = "The backend for the AuraQuant Trading Platform."
+readme = "README.md"
+requires-python = ">=3.10"
+# Add your dependencies here. This is an alternative to requirements.txt,
+# but for now we will keep requirements.txt for simplicity with Docker.
+# dependencies = [
+#     "fastapi",
+#     "uvicorn[standard]",
+#     ...
+# ]
+
+[tool.setuptools.packages.find]
+# This is the most important part.
+# It tells setuptools that the "app" directory is a top-level package.
+where = ["."]
+include = ["app*"]

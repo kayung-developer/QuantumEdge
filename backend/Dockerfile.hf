@@ -1,0 +1,48 @@
+# --- Stage 1: Build Stage (same as before) ---
+FROM python:3.11-slim as builder
+WORKDIR /usr/src/app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+# --- Stage 2: Production Stage ---
+FROM python:3.11-slim
+WORKDIR /app
+
+# --- Install supervisord ---
+# supervisord is a lightweight process manager that will run all our services.
+RUN apt-get update && apt-get install -y --no-install-recommends supervisor && rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user for security
+RUN addgroup --system app && adduser --system --group app
+
+# Copy installed dependencies from the build stage
+COPY --from=builder /usr/src/app/wheels /wheels
+COPY --from=builder /usr/src/app/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+# Copy the application code
+COPY ./app /app/app
+COPY ./alembic /app/alembic
+COPY alembic.ini /app/alembic.ini
+# Copy the trained regime models and the sandbox environment
+COPY ./regime_models /app/regime_models
+COPY ./strategy_sandbox /app/strategy_sandbox
+
+# Copy the supervisord configuration file
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Change ownership of the app directory
+RUN chown -R app:app /app
+
+# Switch to the non-root user
+USER app
+
+# Expose the port for the FastAPI application
+EXPOSE 7860 # Hugging Face Spaces typically use port 7860 for web services
+
+# --- The final command ---
+# Start supervisord, which will in turn start Uvicorn and Celery.
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

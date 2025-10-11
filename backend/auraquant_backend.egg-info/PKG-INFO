@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: auraquant_backend
+Version: 1.0.0
+Summary: The backend for the AuraQuant Trading Platform.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
