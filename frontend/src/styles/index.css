@@ -1,0 +1,57 @@
+/* Import Tailwind CSS's base, components, and utilities layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Define global CSS variables for theming. This allows for dynamic theme
+  switching and consistent styling across the application.
+*/
+@layer base {
+  :root {
+    /* Light Theme (Default Fallback) */
+    --background: #FFFFFF;
+    --surface: #F0F2F5;
+    --surface-secondary: #FFFFFF;
+    --text-primary: #1F2328;
+    --text-secondary: #636C76;
+    --border-color: #E4E6EB;
+    --brand-primary: #3B82F6;
+  }
+
+  .dark {
+    /* Dark Theme */
+    --background: #0D1117;
+    --surface: #161B22;
+    --surface-secondary: #0A192F;
+    --text-primary: #E6EDF3;
+    --text-secondary: #8B949E;
+    --border-color: #30363D;
+    --brand-primary: #3B82F6;
+  }
+
+  /* Apply base styles to the body */
+  body {
+    @apply bg-[var(--background)] text-[var(--text-primary)] font-sans antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Custom scrollbar styling for a modern, dark look */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: theme('colors.dark.background');
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: theme('colors.dark.secondary');
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}

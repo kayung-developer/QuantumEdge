@@ -1,0 +1,75 @@
+{
+  "sidebar": {
+    "dashboard": "대시보드",
+    "trading": "AI 스마트 트레이딩",
+    "portfolio": "포트폴리오",
+    "on_chain": "온체인",
+    "strategy_studio": "전략 스튜디오",
+    "walk_forward_studio": "워크포워드 스튜디오",
+    "adaptive_studio": "적응형 스튜디오",
+    "marketplace": "마켓플레이스",
+    "my_strategies": "내 전략",
+    "trade_rooms": "트레이딩 룸",
+    "settings": "설정",
+    "admin": "관리자 패널",
+    "headings": {
+      "ecosystem": "생태계",
+      "studios": "스튜디오",
+      "management": "관리"
+    }
+  },
+  "header": {
+    "searchPlaceholder": "자산, 전략 검색...",
+    "accountSettings": "계정 설정",
+    "logout": "로그아웃"
+  },
+  "dashboard": {
+    "welcomeBack": "다시 오신 것을 환영합니다, {{name}}님!",
+    "title": "대시보드",
+    "description": "여기는 메인 대시보드입니다. AI 트레이딩 봇과 시장 개요가 여기에 표시됩니다."
+  },
+  "login": {
+    "title": "AuraQuant에 오신 것을 환영합니다",
+    "subtitle": "트레이딩 대시보드에 액세스하려면 로그인하세요.",
+    "emailLabel": "이메일",
+    "passwordLabel": "비밀번호",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "signIn": "로그인",
+    "noAccount": "계정이 없으신가요?",
+    "signUp": "가입하기"
+  },
+  "common": {
+    "loading": "로드 중..."
+  },
+  "trading": {
+    "instrument": "상품",
+    "price": "가격",
+    "amount": "수량",
+    "total": "총액",
+    "buy": "매수",
+    "sell": "매도",
+    "marketOrder": "시장가 주문",
+    "limitOrder": "지정가 주문",
+    "positions": "포지션",
+    "openOrders": "미체결 주문",
+    "tradeHistory": "거래 내역"
+  },
+  "validation": {
+    "invalidEmail": "유효하지 않은 이메일 주소입니다",
+    "emailRequired": "이메일은 필수입니다",
+    "passwordMinLength": "비밀번호는 6자 이상이어야 합니다",
+    "passwordRequired": "비밀번호는 필수입니다"
+  },
+  "tour": {
+    "step1": "여기는 메인 탐색 사이드바입니다. 여기에서 플랫폼의 모든 주요 영역에 액세스할 수 있습니다.",
+    "step2": "여기에서는 검색, 알림, 언어 또는 테마 설정과 같은 빠른 작업을 찾을 수 있습니다.",
+    "step3": "여기는 메인 작업 공간입니다. 모든 콘텐츠, 차트 및 도구가 이 영역에 표시됩니다.",
+    "step4": "여기를 클릭하여 AuraQuant의 핵심으로 이동하세요: AI 기반 스마트 트레이딩 인터페이스입니다."
+  },
+  "admin": {
+    "userManagement": {
+      "title": "사용자 관리",
+      "description": "AuraQuant 플랫폼의 모든 사용자를 보고, 편집하고, 관리합니다. 여기서 수행되는 작업은 중요하며 사용자 액세스에 영향을 미칠 수 있음을 유의하십시오."
+    }
+  }
+}

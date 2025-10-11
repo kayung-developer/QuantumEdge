@@ -1,0 +1,75 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "trading": "AI Smart Trading",
+    "portfolio": "Portfolio",
+    "on_chain": "On-Chain",
+    "strategy_studio": "Strategy Studio",
+    "walk_forward_studio": "Walk-Forward Studio",
+    "adaptive_studio": "Adaptive Studio",
+    "marketplace": "Marketplace",
+    "my_strategies": "My Strategies",
+    "trade_rooms": "Trade Rooms",
+    "settings": "Settings",
+    "admin": "Admin Panel",
+    "headings": {
+      "ecosystem": "ECOSYSTEM",
+      "studios": "STUDIOS",
+      "management": "MANAGEMENT"
+    }
+  },
+  "header": {
+    "searchPlaceholder": "Search for assets, strategies...",
+    "accountSettings": "Account Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back, {{name}}!",
+    "title": "Dashboard",
+    "description": "This is your main dashboard. Your AI trading bots and market overview will be displayed here."
+  },
+  "login": {
+    "title": "Welcome to AuraQuant",
+    "subtitle": "Sign in to access your trading dashboard.",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot your password?",
+    "signIn": "Sign In",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "trading": {
+    "instrument": "Instrument",
+    "price": "Price",
+    "amount": "Amount",
+    "total": "Total",
+    "buy": "Buy",
+    "sell": "Sell",
+    "marketOrder": "Market Order",
+    "limitOrder": "Limit Order",
+    "positions": "Positions",
+    "openOrders": "Open Orders",
+    "tradeHistory": "Trade History"
+  },
+  "validation": {
+    "invalidEmail": "Invalid email address",
+    "emailRequired": "Email is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "passwordRequired": "Password is required"
+  },
+  "tour": {
+    "step1": "This is your main navigation sidebar. Access all key areas of the platform from here.",
+    "step2": "Here you'll find quick actions like search, notifications, and language or theme settings.",
+    "step3": "Your main workspace is here. All content, charts, and tools will be displayed in this area.",
+    "step4": "Click here to jump into the heart of AuraQuant: the AI-powered smart trading interface."
+  },
+  "admin": {
+    "userManagement": {
+      "title": "User Management",
+      "description": "View, edit, and manage all users on the AuraQuant platform. Be advised that actions taken here are critical and can impact user access."
+    }
+  }
+}

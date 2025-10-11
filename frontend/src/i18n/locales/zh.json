@@ -1,0 +1,75 @@
+{
+  "sidebar": {
+    "dashboard": "仪表板",
+    "trading": "人工智能智能交易",
+    "portfolio": "投资组合",
+    "on_chain": "链上",
+    "strategy_studio": "策略工作室",
+    "walk_forward_studio": "步进优化工作室",
+    "adaptive_studio": "自适应工作室",
+    "marketplace": "策略市场",
+    "my_strategies": "我的策略",
+    "trade_rooms": "交易室",
+    "settings": "设置",
+    "admin": "管理面板",
+    "headings": {
+      "ecosystem": "生态系统",
+      "studios": "工作室",
+      "management": "管理"
+    }
+  },
+  "header": {
+    "searchPlaceholder": "搜索资产、策略...",
+    "accountSettings": "账户设置",
+    "logout": "登出"
+  },
+  "dashboard": {
+    "welcomeBack": "欢迎回来，{{name}}！",
+    "title": "仪表板",
+    "description": "这是您的主仪表板。您的AI交易机器人和市场概览将显示在这里。"
+  },
+  "login": {
+    "title": "欢迎来到 AuraQuant",
+    "subtitle": "请登录以访问您的交易仪表板。",
+    "emailLabel": "电子邮件",
+    "passwordLabel": "密码",
+    "forgotPassword": "忘记密码？",
+    "signIn": "登录",
+    "noAccount": "没有账户？",
+    "signUp": "注册"
+  },
+  "common": {
+    "loading": "加载中..."
+  },
+  "trading": {
+    "instrument": "交易品种",
+    "price": "价格",
+    "amount": "数量",
+    "total": "总计",
+    "buy": "买入",
+    "sell": "卖出",
+    "marketOrder": "市价单",
+    "limitOrder": "限价单",
+    "positions": "持仓",
+    "openOrders": "挂单",
+    "tradeHistory": "交易历史"
+  },
+  "validation": {
+    "invalidEmail": "无效的电子邮件地址",
+    "emailRequired": "电子邮件是必需的",
+    "passwordMinLength": "密码长度至少为6个字符",
+    "passwordRequired": "密码是必需的"
+  },
+  "tour": {
+    "step1": "这是您的主导航侧边栏。您可以从这里访问平台的所有关键区域。",
+    "step2": "在这里您可以找到快速操作，如搜索、通知以及语言或主题设置。",
+    "step3": "您的主工作区在这里。所有内容、图表和工具都将显示在此区域。",
+    "step4": "点击这里进入AuraQuant的核心：由AI驱动的智能交易界面。"
+  },
+  "admin": {
+    "userManagement": {
+      "title": "用户管理",
+      "description": "查看、编辑和管理AuraQuant平台上的所有用户。请注意，此处执行的操作至关重要，可能会影响用户的访问权限。"
+    }
+  }
+}
