@@ -1,61 +1,47 @@
-# --- Stage 1: Build Stage ---
-# This stage's only purpose is to compile dependencies and create wheels.
-FROM python:3.11-slim as builder
-
-WORKDIR /usr/src/app
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PIP_NO_CACHE_DIR=off
-ENV PIP_DISABLE_PIP_VERSION_CHECK=on
-
-# Install build dependencies, including git
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev git
-
-# Copy only the requirements file first to leverage Docker's layer caching
-COPY requirements.txt .
-
-# --- CRITICAL OPTIMIZATION ---
-# Install a specific, CPU-only version of PyTorch to drastically reduce size.
-# We also pre-install it before the main requirements.txt to have more control.
-RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels \
-    --index-url https://download.pytorch.org/whl/cpu \
-    torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0
-
-# Now, install the rest of the requirements
-RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 
-# --- Stage 2: Final Production Stage ---
-# This stage will be as minimal as possible.
-FROM python:3.11-slim
-
-WORKDIR /app
-
-# Install only the necessary runtime dependencies.
-# 'supervisor' for process management and 'libpq5' for the PostgreSQL client.
+stage-1
 RUN apt-get update && apt-get install -y --no-install-recommends supervisor libpq5 && rm -rf /var/lib/apt/lists/*
+8s
+Processing triggers for libc-bin (2.41-12) ...
 
-# Create a non-root user for security
+builder
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev git
+12s
+Processing triggers for libc-bin (2.41-12) ...
+
+stage-1
 RUN addgroup --system app && adduser --system --group app
+227ms
 
-# Copy the pre-built Python packages (wheels) from the builder stage
+builder
+COPY requirements.txt .
+60ms
+
+builder
+RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels     --index-url https://download.pytorch.org/whl/cpu     torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0
+10s
+Saved ./wheels/urllib3-1.26.13-py2.py3-none-any.whl
+
+builder
+RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels -r requirements.txt
+1m 20s
+Saved ./wheels/wcwidth-0.2.14-py2.py3-none-any.whl
+
+stage-1
 COPY --from=builder /usr/src/app/wheels /wheels
-# Install the wheels. Using --no-index ensures we ONLY install from our local wheels,
-# preventing any accidental re-downloads.
+5s
+
+stage-1
 RUN pip install --no-cache --no-index --find-links=/wheels /wheels/*
-
-# Copy the application source code
-COPY . /app
-
-# Copy the supervisord configuration file
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# Change ownership of the app directory
-RUN chown -R app:app /app
-
-# Switch to the non-root user
-USER app
-
-# Command to start supervisord, which runs our app
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+15s
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+Dockerfile:46
+-------------------
+44 |     # Install the wheels. Using --no-index ensures we ONLY install from our local wheels,
+45 |     # preventing any accidental re-downloads.
+46 | >>> RUN pip install --no-cache --no-index --find-links=/wheels /wheels/*
+47 |
+48 |     # Copy the application source code
+-------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c pip install --no-cache --no-index --find-links=/wheels /wheels/*" did not complete successfully: exit code: 1
