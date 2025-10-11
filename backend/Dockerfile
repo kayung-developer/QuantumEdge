@@ -1,33 +1,49 @@
 # --- Stage 1: Build Stage ---
+# This stage's only purpose is to compile dependencies and create wheels.
 FROM python:3.11-slim as builder
 
 WORKDIR /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PIP_NO_CACHE_DIR=off
+ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 
-# --- CRITICAL FIX: Install 'git' alongside other build tools ---
-# This makes the 'git' command available for pip to install packages from GitHub.
+# Install build dependencies, including git
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev git
 
-# Copy requirements and build wheels for faster installation in the next stage
+# Copy only the requirements file first to leverage Docker's layer caching
 COPY requirements.txt .
-# We will run the standard install here to see if the PyPI version works with the git fix
-RUN pip install --no-cache-dir -r requirements.txt --target=/usr/src/app/packages
+
+# --- CRITICAL OPTIMIZATION ---
+# Install a specific, CPU-only version of PyTorch to drastically reduce size.
+# We also pre-install it before the main requirements.txt to have more control.
+RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels \
+    --index-url https://download.pytorch.org/whl/cpu \
+    torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0
+
+# Now, install the rest of the requirements
+RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels -r requirements.txt
+
 
 # --- Stage 2: Final Production Stage ---
+# This stage will be as minimal as possible.
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install supervisord and netcat
-RUN apt-get update && apt-get install -y --no-install-recommends supervisor netcat-openbsd && rm -rf /var/lib/apt/lists/*
+# Install only the necessary runtime dependencies.
+# 'supervisor' for process management and 'libpq5' for the PostgreSQL client.
+RUN apt-get update && apt-get install -y --no-install-recommends supervisor libpq5 && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user
+# Create a non-root user for security
 RUN addgroup --system app && adduser --system --group app
 
-# Copy the installed Python packages from the build stage
-COPY --from=builder /usr/src/app/packages /usr/local/lib/python3.11/site-packages
+# Copy the pre-built Python packages (wheels) from the builder stage
+COPY --from=builder /usr/src/app/wheels /wheels
+# Install the wheels. Using --no-index ensures we ONLY install from our local wheels,
+# preventing any accidental re-downloads.
+RUN pip install --no-cache --no-index --find-links=/wheels /wheels/*
 
 # Copy the application source code
 COPY . /app
@@ -35,11 +51,11 @@ COPY . /app
 # Copy the supervisord configuration file
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Change ownership
+# Change ownership of the app directory
 RUN chown -R app:app /app
 
 # Switch to the non-root user
 USER app
 
-# Command to start supervisord
+# Command to start supervisord, which runs our app
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
