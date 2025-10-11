@@ -1,47 +1,58 @@
+# --- Stage 1: Build Stage ---
+# This stage's only purpose is to gather and install all Python dependencies.
+FROM python:3.11-slim as builder
 
+WORKDIR /usr/src/app
 
-stage-1
-RUN apt-get update && apt-get install -y --no-install-recommends supervisor libpq5 && rm -rf /var/lib/apt/lists/*
-8s
-Processing triggers for libc-bin (2.41-12) ...
+# Set environment variables for a clean and efficient build
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PIP_NO_CACHE_DIR=off
 
-builder
+# Install system-level build dependencies, including git for installing from git repos if needed
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev git
-12s
-Processing triggers for libc-bin (2.41-12) ...
 
-stage-1
-RUN addgroup --system app && adduser --system --group app
-227ms
-
-builder
+# Copy the requirements file to leverage Docker's layer caching
 COPY requirements.txt .
-60ms
 
-builder
-RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels     --index-url https://download.pytorch.org/whl/cpu     torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0
-10s
-Saved ./wheels/urllib3-1.26.13-py2.py3-none-any.whl
+# Install all Python packages into a dedicated target directory.
+# This single, unified command allows pip's dependency resolver to create a consistent
+# set of packages, using the PyTorch CPU index as a priority.
+RUN pip install \
+    --target=/usr/src/app/packages \
+    --index-url https://download.pytorch.org/whl/cpu \
+    --extra-index-url https://pypi.org/simple \
+    -r requirements.txt
 
-builder
-RUN pip wheel --no-cache-dir --wheel-dir /usr/src/app/wheels -r requirements.txt
-1m 20s
-Saved ./wheels/wcwidth-0.2.14-py2.py3-none-any.whl
+# --- Stage 2: Final Production Stage ---
+# This stage builds the final, minimal image for deployment.
+FROM python:3.11-slim
 
-stage-1
-COPY --from=builder /usr/src/app/wheels /wheels
-5s
+WORKDIR /app
 
-stage-1
-RUN pip install --no-cache --no-index --find-links=/wheels /wheels/*
-15s
-ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
-Dockerfile:46
--------------------
-44 |     # Install the wheels. Using --no-index ensures we ONLY install from our local wheels,
-45 |     # preventing any accidental re-downloads.
-46 | >>> RUN pip install --no-cache --no-index --find-links=/wheels /wheels/*
-47 |
-48 |     # Copy the application source code
--------------------
-ERROR: failed to build: failed to solve: process "/bin/sh -c pip install --no-cache --no-index --find-links=/wheels /wheels/*" did not complete successfully: exit code: 1
+# Install only the necessary RUNTIME system dependencies.
+# 'supervisor' for process management, 'libpq5' for the PostgreSQL client,
+# and 'netcat-openbsd' for the database readiness check.
+RUN apt-get update && apt-get install -y --no-install-recommends supervisor libpq5 netcat-openbsd && rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user for security best practices
+RUN addgroup --system app && adduser --system --group app
+
+# Copy the pre-installed Python packages from the builder stage into the final image.
+COPY --from=builder /usr/src/app/packages /usr/local/lib/python3.11/site-packages
+
+# Copy the entire application source code from the build context
+COPY . /app
+
+# Copy the supervisord configuration file to its required location
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Set correct ownership for the application directory
+RUN chown -R app:app /app
+
+# Switch to the non-root user
+USER app
+
+# The command to execute when the container starts.
+# This starts the supervisord daemon, which in turn starts our Uvicorn and Celery processes.
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
