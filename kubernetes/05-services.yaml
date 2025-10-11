@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: auraquant-production
+spec:
+  selector: { app: postgres }
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: auraquant-production
+spec:
+  selector: { app: redis }
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: auraquant-production
+spec:
+  selector: { app: backend }
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: auraquant-production
+spec:
+  selector: { app: frontend }
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

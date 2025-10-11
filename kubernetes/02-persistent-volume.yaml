@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: auraquant-production
+spec:
+  accessModes:
+    - ReadWriteOnce # This volume can be mounted by a single node
+  resources:
+    requests:
+      storage: 5Gi # Start with 5 Gigabytes of storage
