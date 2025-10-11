@@ -1,190 +1,206 @@
 """
-AuraQuant - MetaTrader 5 Exchange Adapter (Complete Implementation)
+AuraQuant - MetaTrader 5 Exchange Adapter (Complete Cross-Platform Implementation)
+
+This version uses the pure Python `MetaTraderPy` library to ensure compatibility
+with Linux-based Docker environments and any non-Windows operating system. It fully
+implements the ExchangeAdapterProtocol with native asyncio operations.
 """
 import asyncio
 import pandas as pd
 from datetime import datetime
 from typing import List, Optional, Dict, Any
 
-import MetaTrader5 as mt5
+from MetaTraderPy import MetaTraderPy
+from MetaTraderPy.types import TimeFrame, OrderType as MT_OrderType, TradeAction, TradeResult, Position
 
 from app.core.config import settings
 from app.core.exchange_adapter import ExchangeAdapterProtocol, ConnectionStatus
 from app.schemas.market_data import SymbolInfo, TickData, KlineData
-from app.schemas.trade import OrderRequest, OrderResult, PositionInfo, TradeHistoryInfo, OrderType
+from app.schemas.trade import OrderRequest, OrderResult, PositionInfo, TradeHistoryInfo, OrderType as Aura_OrderType
 
 class MT5Adapter(ExchangeAdapterProtocol):
     exchange_name: str = "MetaTrader5"
     _status: ConnectionStatus = ConnectionStatus.DISCONNECTED
-    _loop: Optional[asyncio.AbstractEventLoop] = None
-
-    def _get_loop(self):
-        if self._loop is None:
-            self._loop = asyncio.get_running_loop()
-        return self._loop
-
-    async def _run_blocking(self, func, *args, **kwargs):
-        """Helper to run blocking MT5 calls in a thread pool."""
-        if self.get_status() != ConnectionStatus.CONNECTED:
-            raise ConnectionError("MetaTrader 5 is not connected.")
-        return await self._get_loop().run_in_executor(None, lambda: func(*args, **kwargs))
-
-    async def connect(self):
-        self._status = ConnectionStatus.CONNECTING
-        if not all([settings.MT5_LOGIN, settings.MT5_PASSWORD, settings.MT5_SERVER]):
-            self._status = ConnectionStatus.ERROR
-            raise ConnectionError("MT5 credentials are not fully configured.")
-
-        initialized = await self._get_loop().run_in_executor(
-            None, mt5.initialize,
-            settings.MT5_LOGIN, settings.MT5_PASSWORD, settings.MT5_SERVER
+    
+    def __init__(self):
+        login = int(settings.MT5_LOGIN) if settings.MT5_LOGIN else 0
+        if not all([login, settings.MT5_PASSWORD, settings.MT5_SERVER]):
+            # This adapter cannot function without credentials.
+            self.client = None
+            return
+            
+        self.client = MetaTraderPy(
+            login=login,
+            password=settings.MT5_PASSWORD,
+            server=settings.MT5_SERVER
         )
 
-        if not initialized:
+    async def connect(self):
+        if not self.client:
             self._status = ConnectionStatus.ERROR
-            raise ConnectionError(f"MT5 initialization failed. Error: {mt5.last_error()}")
-
-        self._status = ConnectionStatus.CONNECTED
+            raise ConnectionError("MT5 credentials are not configured, cannot connect.")
+            
+        self._status = ConnectionStatus.CONNECTING
+        try:
+            await self.client.connect()
+            self._status = ConnectionStatus.CONNECTED
+        except Exception as e:
+            self._status = ConnectionStatus.ERROR
+            raise ConnectionError(f"MT5 connection failed using MetaTraderPy: {e}")
 
     async def disconnect(self):
-        if self._status == ConnectionStatus.CONNECTED:
-            await self._run_blocking(mt5.shutdown)
-            self._status = ConnectionStatus.DISCONNECTED
+        if self.client and self.get_status() == ConnectionStatus.CONNECTED:
+            await self.client.disconnect()
+        self._status = ConnectionStatus.DISCONNECTED
 
     def get_status(self) -> ConnectionStatus:
+        if self.client and self.client.is_connected:
+            self._status = ConnectionStatus.CONNECTED
+        else:
+            self._status = ConnectionStatus.DISCONNECTED
         return self._status
 
-    async def get_all_symbols(self) -> List[SymbolInfo]:
-        symbols = await self._run_blocking(mt5.symbols_get)
-        if not symbols: return []
+    def _map_timeframe(self, timeframe_str: str) -> TimeFrame:
+        tf_map = {
+            "1M": TimeFrame.TIME_FRAME_M1, "5M": TimeFrame.TIME_FRAME_M5, "15M": TimeFrame.TIME_FRAME_M15,
+            "30M": TimeFrame.TIME_FRAME_M30, "1H": TimeFrame.TIME_FRAME_H1, "4H": TimeFrame.TIME_FRAME_H4,
+            "1D": TimeFrame.TIME_FRAME_D1, "1W": TimeFrame.TIME_FRAME_W1, "1MN": TimeFrame.TIME_FRAME_MN1
+        }
+        timeframe = tf_map.get(timeframe_str.upper())
+        if timeframe is None: raise ValueError(f"Unsupported timeframe for MT5: {timeframe_str}")
+        return timeframe
+        
+    def _map_order_type_to_mtpy(self, order_type: Aura_OrderType) -> MT_OrderType:
+        mapping = {
+            Aura_OrderType.BUY: MT_OrderType.ORDER_TYPE_BUY,
+            Aura_OrderType.SELL: MT_OrderType.ORDER_TYPE_SELL,
+            Aura_OrderType.BUY_LIMIT: MT_OrderType.ORDER_TYPE_BUY_LIMIT,
+            Aura_OrderType.SELL_LIMIT: MT_OrderType.ORDER_TYPE_SELL_LIMIT,
+            Aura_OrderType.BUY_STOP: MT_OrderType.ORDER_TYPE_BUY_STOP,
+            Aura_OrderType.SELL_STOP: MT_OrderType.ORDER_TYPE_SELL_STOP,
+        }
+        return mapping[order_type]
 
-        tasks = [self.get_symbol_info(s.name) for s in symbols]
+    async def get_all_symbols(self) -> List[SymbolInfo]:
+        if self.get_status() != ConnectionStatus.CONNECTED: return []
+        symbol_names = await self.client.get_symbols()
+        tasks = [self.get_symbol_info(s) for s in symbol_names]
         results = await asyncio.gather(*tasks)
-        return [res for res in results if res is not None]
+        return [res for res in results if res is not None and "forex" in res.description.lower()] # Filter for forex symbols
 
     async def get_symbol_info(self, symbol: str) -> Optional[SymbolInfo]:
-        info = await self._run_blocking(mt5.symbol_info, symbol)
+        if self.get_status() != ConnectionStatus.CONNECTED: return None
+        info = await self.client.get_symbol_info(symbol)
         if not info: return None
         return SymbolInfo(
-            name=info.name, description=info.description,
-            exchange="MT5", currency_base=info.currency_base,
-            currency_profit=info.currency_profit,
-            volume_min=info.volume_min, volume_max=info.volume_max,
-            volume_step=info.volume_step, trade_contract_size=info.trade_contract_size
+            name=info.get('name'), description=info.get('description'), exchange=self.exchange_name,
+            currency_base=info.get('currencyBase'), currency_profit=info.get('currencyMargin'),
+            volume_min=info.get('volumeMin'), volume_max=info.get('volumeMax'),
+            volume_step=info.get('volumeStep'), trade_contract_size=info.get('tradeContractSize')
         )
 
     async def get_latest_tick(self, symbol: str) -> Optional[TickData]:
-        tick = await self._run_blocking(mt5.symbol_info_tick, symbol)
+        if self.get_status() != ConnectionStatus.CONNECTED: return None
+        tick = await self.client.get_symbol_price(symbol)
         if not tick: return None
         return TickData(
-            symbol=symbol, time=datetime.fromtimestamp(tick.time),
-            bid=tick.bid, ask=tick.ask, last=tick.last, volume=int(tick.volume)
+            symbol=symbol, time=datetime.now(), # MetaTraderPy does not provide tick timestamp
+            bid=tick.get('bid'), ask=tick.get('ask'), last=tick.get('last'), volume=0
         )
 
-    async def get_historical_klines(
-        self, symbol: str, timeframe_str: str, start_dt: datetime, end_dt: datetime
-    ) -> List[KlineData]:
-        timeframe_map = {
-            "1M": mt5.TIMEFRAME_M1, "5M": mt5.TIMEFRAME_M5, "15M": mt5.TIMEFRAME_M15,
-            "30M": mt5.TIMEFRAME_M30, "1H": mt5.TIMEFRAME_H1, "4H": mt5.TIMEFRAME_H4,
-            "1D": mt5.TIMEFRAME_D1, "1W": mt5.TIMEFRAME_W1, "1MN": mt5.TIMEFRAME_MN1
-        }
-        timeframe = timeframe_map.get(timeframe_str.upper())
-        if timeframe is None:
-            raise ValueError(f"Unsupported timeframe: {timeframe_str}")
-
-        rates = await self._run_blocking(mt5.copy_rates_range, symbol, timeframe, start_dt, end_dt)
-        if rates is None or len(rates) == 0:
-            return []
-
-        df = pd.DataFrame(rates)
-        return [KlineData(**row) for row in df.to_dict('records')]
+    async def get_historical_klines(self, symbol: str, timeframe_str: str, start_dt: datetime, end_dt: datetime) -> List[KlineData]:
+        if self.get_status() != ConnectionStatus.CONNECTED: return []
+        timeframe = self._map_timeframe(timeframe_str)
+        rates = await self.client.get_historic_data(symbol, timeframe, start_dt, end_dt)
+        if not rates: return []
+        return [KlineData(
+            time=int(r['time']), open=r['open'], high=r['high'],
+            low=r['low'], close=r['close'], tick_volume=int(r['tickVolume'])
+        ) for r in rates]
 
     async def place_order(self, order_request: OrderRequest) -> OrderResult:
-        symbol_info = await self._run_blocking(mt5.symbol_info, order_request.symbol)
-        if symbol_info is None: raise ValueError(f"Symbol {order_request.symbol} not found.")
-
-        fill_policy_map = {
-            mt5.SYMBOL_FILLING_FOK: mt5.ORDER_FILLING_FOK,
-            mt5.SYMBOL_FILLING_IOC: mt5.ORDER_FILLING_IOC,
-            mt5.SYMBOL_FILLING_RETURN: mt5.ORDER_FILLING_RETURN,
-        }
-        fill_policy = fill_policy_map.get(symbol_info.filling_mode, mt5.ORDER_FILLING_FOK)
-
-        mt5_order_type_map = {
-            OrderType.BUY: mt5.ORDER_TYPE_BUY, OrderType.SELL: mt5.ORDER_TYPE_SELL,
-            OrderType.BUY_LIMIT: mt5.ORDER_TYPE_BUY_LIMIT, OrderType.SELL_LIMIT: mt5.ORDER_TYPE_SELL_LIMIT,
-            OrderType.BUY_STOP: mt5.ORDER_TYPE_BUY_STOP, OrderType.SELL_STOP: mt5.ORDER_TYPE_SELL_STOP,
-        }
-        mt5_order_type = mt5_order_type_map[order_request.type]
-
-        tick = await self._run_blocking(mt5.symbol_info_tick, order_request.symbol)
-        price = 0.0
-        if order_request.type == OrderType.BUY: price = tick.ask
-        elif order_request.type == OrderType.SELL: price = tick.bid
-        else: price = order_request.price
-
-        if price is None or price == 0.0:
-            raise ValueError("Invalid price for order execution.")
-
+        if self.get_status() != ConnectionStatus.CONNECTED: raise ConnectionError("MT5 is not connected.")
+        
+        mt5_order_type = self._map_order_type_to_mtpy(order_request.type)
+        
+        # MetaTraderPy uses an explicit dictionary for trade requests
         request = {
-            "action": mt5.TRADE_ACTION_DEAL, "symbol": order_request.symbol, "volume": order_request.volume,
-            "type": mt5_order_type, "price": price, "sl": order_request.sl or 0.0,
-            "tp": order_request.tp or 0.0, "deviation": order_request.deviation, "magic": order_request.magic,
-            "comment": order_request.comment, "type_time": mt5.ORDER_TIME_GTC, "type_filling": fill_policy,
+            "symbol": order_request.symbol,
+            "volume": order_request.volume,
+            "type": mt5_order_type,
+            "price": order_request.price,
+            "stop_loss": order_request.sl,
+            "take_profit": order_request.tp,
+            "magic": order_request.magic,
+            "comment": order_request.comment
         }
-
-        result = await self._run_blocking(mt5.order_send, request)
-        if result is None:
-            raise ConnectionAbortedError(f"Order send failed, no result. MT5 Error: {mt5.last_error()}")
-
-        return OrderResult(**result._asdict(), retcode_message=result.comment)
+        
+        try:
+            result: TradeResult = await self.client.create_order(request)
+            # Map the result back to our internal OrderResult schema
+            return OrderResult(
+                retcode=result.get('retcode'),
+                deal=result.get('dealId', 0),
+                order=result.get('orderId', 0),
+                volume=result.get('volume', 0.0),
+                price=result.get('price', 0.0),
+                bid=result.get('bid', 0.0),
+                ask=result.get('ask', 0.0),
+                comment=result.get('comment', "No comment"),
+                request_id=result.get('requestId', 0),
+                retcode_message=result.get('comment', "No comment")
+            )
+        except Exception as e:
+            raise ConnectionAbortedError(f"Order send failed via MetaTraderPy: {e}")
 
     async def cancel_order(self, order_id: str, symbol: str) -> Dict[str, Any]:
-        request = {
-            "action": mt5.TRADE_ACTION_REMOVE,
-            "order": int(order_id),
-        }
-        result = await self._run_blocking(mt5.order_send, request)
-        if result is None:
-            raise ConnectionAbortedError(f"Order cancel failed. MT5 Error: {mt5.last_error()}")
+        if self.get_status() != ConnectionStatus.CONNECTED: raise ConnectionError("MT5 is not connected.")
+        
+        try:
+            result = await self.client.cancel_order(int(order_id))
+            return {"status": "success", "message": result.get('comment'), "details": result}
+        except Exception as e:
+            raise ValueError(f"Failed to cancel order {order_id}: {e}")
 
-        if result.retcode == mt5.TRADE_RETCODE_DONE:
-            return {"status": "success", "message": result.comment, "details": result._asdict()}
-        else:
-            raise ValueError(f"Failed to cancel order: {result.comment}")
+    def _map_position_type(self, pos_type: str) -> str:
+        return "BUY" if pos_type == 'POSITION_TYPE_BUY' else "SELL"
 
     async def get_open_positions(self) -> List[PositionInfo]:
-        positions = await self._run_blocking(mt5.positions_get)
-        if positions is None: return []
-
+        if self.get_status() != ConnectionStatus.CONNECTED: return []
+        
+        positions: List[Position] = await self.client.get_positions()
+        if not positions: return []
+        
         return [PositionInfo(
-            ticket=pos.ticket, symbol=pos.symbol, type="BUY" if pos.type == mt5.ORDER_TYPE_BUY else "SELL",
-            volume=pos.volume, price_open=pos.price_open, price_current=pos.price_current,
-            sl=pos.sl, tp=pos.tp, profit=pos.profit, time=pos.time,
-            magic=pos.magic, comment=pos.comment
+            ticket=pos.get('ticket'), symbol=pos.get('symbol'), type=self._map_position_type(pos.get('type')),
+            volume=pos.get('volume'), price_open=pos.get('priceOpen'), price_current=pos.get('priceCurrent'),
+            sl=pos.get('stopLoss'), tp=pos.get('takeProfit'), profit=pos.get('profit'),
+            time=datetime.fromtimestamp(pos.get('time')), magic=pos.get('magic'), comment=pos.get('comment')
         ) for pos in positions]
 
     async def get_trade_history(self, start_date: datetime, end_date: datetime) -> List[TradeHistoryInfo]:
-        deals = await self._run_blocking(mt5.history_deals_get, start_date, end_date)
-        if deals is None: return []
+        if self.get_status() != ConnectionStatus.CONNECTED: return []
+        
+        deals = await self.client.get_historic_deals(start_date, end_date)
+        if not deals: return []
 
         return [TradeHistoryInfo(
-            ticket=deal.ticket, order=deal.order, symbol=deal.symbol,
-            type="BUY" if deal.type == mt5.ORDER_TYPE_BUY else "SELL",
-            entry="IN" if deal.entry == mt5.DEAL_ENTRY_IN else "OUT",
-            volume=deal.volume, price=deal.price, profit=deal.profit,
-            time=deal.time, magic=deal.magic, comment=deal.comment
-        ) for deal in deals]
-
+            ticket=d.get('ticket'), order=d.get('order'), symbol=d.get('symbol'),
+            type="BUY" if d.get('type') == 'DEAL_TYPE_BUY' else "SELL",
+            entry="IN" if d.get('entry') == 'DEAL_ENTRY_IN' else "OUT",
+            volume=d.get('volume'), price=d.get('price'), profit=d.get('profit'),
+            time=datetime.fromtimestamp(d.get('time')), magic=d.get('magic'), comment=d.get('comment')
+        ) for d in deals]
+        
     async def get_account_balance(self) -> Dict[str, Any]:
-        info = await self._run_blocking(mt5.account_info)
-        if not info:
-            raise ValueError("Could not retrieve account info from MT5.")
+        if self.get_status() != ConnectionStatus.CONNECTED: raise ValueError("MT5 is not connected.")
+        
+        info = await self.client.get_account_information()
+        if not info: raise ValueError("Could not retrieve account info from MT5.")
+        
         return {
-            "balance": info.balance,
-            "equity": info.equity,
-            "profit": info.profit,
-            "currency": info.currency,
-            "leverage": info.leverage,
+            "balance": info.get('balance'), "equity": info.get('equity'),
+            "profit": info.get('profit'), "currency": info.get('currency'),
+            "leverage": info.get('leverage'), "margin": info.get('margin'),
+            "margin_free": info.get('marginFree'), "margin_level": info.get('marginLevel')
         }
