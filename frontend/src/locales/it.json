@@ -1,0 +1,102 @@
+{
+  "sidebar": {
+    "dashboard": "Cruscotto",
+    "strategies": "Strategie",
+    "billing": "Fatturazione e Piani",
+    "adminDashboard": "Cruscotto Admin",
+    "userManagement": "Gestione Utenti",
+    "payments": "Pagamenti"
+  },
+  "header": {
+    "profile": "Il Mio Profilo",
+    "billing": "Fatturazione",
+    "logout": "Esci"
+  },
+  "login": {
+    "title": "Bentornato!",
+    "subtitle": "Accedi per visualizzare la tua dashboard di trading.",
+    "emailLabel": "Indirizzo email",
+    "passwordLabel": "Password",
+    "submitButton": "Accedi",
+    "loading": "Accesso in corso...",
+    "noAccount": "Non hai un account?",
+    "signUp": "Registrati",
+    "success": "Accesso effettuato con successo!",
+    "error": "Accesso fallito: {{message}}"
+  },
+  "register": {
+    "title": "Crea un Account",
+    "subtitle": "Inizia il tuo viaggio nel trading automatico.",
+    "fullNameLabel": "Nome completo",
+    "emailLabel": "Indirizzo email",
+    "passwordLabel": "Password",
+    "submitButton": "Crea Account",
+    "loading": "Creazione account...",
+    "hasAccount": "Hai già un account?",
+    "signIn": "Accedi",
+    "success": "Account creato! Benvenuto a bordo.",
+    "error": "Registrazione fallita: {{message}}"
+  },
+  "profile": {
+    "title": "Profilo Account",
+    "fullName": "Nome completo",
+    "email": "Indirizzo email",
+    "role": "Tipo di account",
+    "memberSince": "Membro dal",
+    "subscription": "Abbonamento Corrente"
+  },
+  "logout": {
+    "success": "Sei stato disconnesso.",
+    "error": "Disconnessione fallita. Riprova."
+  },
+  "dashboard": {
+    "welcome": "Bentornato, {{name}}!",
+    "balance": "Saldo",
+    "equity": "Patrimonio",
+    "profit": "P&L in Tempo Reale",
+    "freeMargin": "Margine Libero",
+    "equityCurve": "Curva del Patrimonio",
+    "recentTrades": "Operazioni Recenti"
+  },
+  "strategies": {
+    "title": "Le Mie Strategie",
+    "add": "Aggiungi Nuova Strategia",
+    "placeholder": "Non hai ancora configurato nessuna strategia. Clicca 'Aggiungi Nuova Strategia' per iniziare!"
+  },
+  "billing": {
+    "title": "Fatturazione e Abbonamento",
+    "subtitle": "Scegli un piano che si adatti alle tue ambizioni di trading."
+  },
+  "payment": {
+    "initiating": "Inizio pagamento...",
+    "loading": "Elaborazione...",
+    "currentPlan": "Piano Attuale",
+    "choosePlan": "Scegli Piano",
+    "error": {
+      "redirect": "Impossibile reindirizzare al provider di pagamento.",
+      "generic": "Inizio pagamento fallito. Riprova."
+    },
+    "success": {
+      "toast": "Pagamento riuscito! Il tuo piano è stato aggiornato.",
+      "title": "Pagamento Riuscito!",
+      "subtitle": "Il tuo account è stato aggiornato. Ora hai accesso a tutte le nuove funzionalità.",
+      "button": "Vai al Cruscotto"
+    },
+    "cancel": {
+      "title": "Pagamento Annullato",
+      "subtitle": "Il tuo pagamento non è stato elaborato. Puoi riprovare dalla pagina di fatturazione.",
+      "button": "Torna alla Fatturazione"
+    }
+  },
+  "tour": {
+    "step1": "Benvenuto nel tuo Cruscotto! Questo è il tuo centro di controllo per il trading automatico.",
+    "step2": "Qui puoi vedere le metriche chiave del tuo account a colpo d'occhio.",
+    "step3": "Traccia la crescita del patrimonio del tuo account nel tempo con questo grafico.",
+    "step4": "Le tue operazioni più recenti appariranno qui in tempo reale.",
+    "strategies": {
+      "step1": "Clicca qui per creare la tua prima strategia di trading automatico.",
+      "step2": "Configura la tua strategia qui. Scegli un tipo, un simbolo e adatta i parametri al tuo stile.",
+      "step3": "Una volta creata, puoi attivare o disattivare la tua strategia in qualsiasi momento con questo interruttore."
+    }
+  }
+}

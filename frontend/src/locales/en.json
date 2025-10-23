@@ -1,0 +1,103 @@
+{
+  "sidebar": {
+    "backtest": "Backtester",
+    "dashboard": "Dashboard",
+    "strategies": "Strategies",
+    "billing": "Billing & Plans",
+    "adminDashboard": "Admin Dashboard",
+    "userManagement": "User Management",
+    "payments": "Payments"
+  },
+  "header": {
+    "profile": "My Profile",
+    "billing": "Billing",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Welcome Back!",
+    "subtitle": "Sign in to access your trading dashboard.",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "submitButton": "Sign In",
+    "loading": "Signing In...",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "success": "Logged in successfully!",
+    "error": "Login failed: {{message}}"
+  },
+  "register": {
+    "title": "Create an Account",
+    "subtitle": "Start your journey with automated trading.",
+    "fullNameLabel": "Full Name",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "submitButton": "Create Account",
+    "loading": "Creating Account...",
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "success": "Account created! Welcome aboard.",
+    "error": "Registration failed: {{message}}"
+  },
+  "profile": {
+    "title": "Account Profile",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "role": "Account Type",
+    "memberSince": "Member Since",
+    "subscription": "Current Subscription"
+  },
+  "logout": {
+    "success": "You have been logged out.",
+    "error": "Logout failed. Please try again."
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}!",
+    "balance": "Balance",
+    "equity": "Equity",
+    "profit": "Live P&L",
+    "freeMargin": "Free Margin",
+    "equityCurve": "Equity Curve",
+    "recentTrades": "Recent Trades"
+  },
+  "strategies": {
+    "title": "My Strategies",
+    "add": "Add New Strategy",
+    "placeholder": "You haven't configured any strategies yet. Click 'Add New Strategy' to get started!"
+  },
+  "billing": {
+    "title": "Billing & Subscription",
+    "subtitle": "Choose a plan that fits your trading ambitions."
+  },
+  "payment": {
+    "initiating": "Initiating payment...",
+    "loading": "Processing...",
+    "currentPlan": "Current Plan",
+    "choosePlan": "Choose Plan",
+    "error": {
+      "redirect": "Could not redirect to payment provider.",
+      "generic": "Payment initiation failed. Please try again."
+    },
+    "success": {
+      "toast": "Payment successful! Your plan has been upgraded.",
+      "title": "Payment Successful!",
+      "subtitle": "Your account has been upgraded. You now have access to all your new features.",
+      "button": "Go to Dashboard"
+    },
+    "cancel": {
+      "title": "Payment Cancelled",
+      "subtitle": "Your payment was not processed. You can try again from the billing page.",
+      "button": "Return to Billing"
+    }
+  },
+  "tour": {
+    "step1": "Welcome to your Dashboard! This is your mission control for automated trading.",
+    "step2": "Here you can see your key account metrics at a glance.",
+    "step3": "Track your account's equity growth over time with this chart.",
+    "step4": "Your most recent trades will appear here in real-time.",
+    "strategies": {
+      "step1": "Click here to create your first automated trading strategy.",
+      "step2": "Configure your strategy here. Choose a type, symbol, and adjust the parameters to match your style.",
+      "step3": "Once created, you can activate or deactivate your strategy at any time with this toggle."
+    }
+  }
+}

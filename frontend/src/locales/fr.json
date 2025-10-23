@@ -1,0 +1,102 @@
+{
+  "sidebar": {
+    "dashboard": "Tableau de Bord",
+    "strategies": "Stratégies",
+    "billing": "Facturation & Plans",
+    "adminDashboard": "Tableau de Bord Admin",
+    "userManagement": "Gestion des Utilisateurs",
+    "payments": "Paiements"
+  },
+  "header": {
+    "profile": "Mon Profil",
+    "billing": "Facturation",
+    "logout": "Déconnexion"
+  },
+  "login": {
+    "title": "Content de vous Revoir !",
+    "subtitle": "Connectez-vous pour accéder à votre tableau de bord de trading.",
+    "emailLabel": "Adresse e-mail",
+    "passwordLabel": "Mot de passe",
+    "submitButton": "Se Connecter",
+    "loading": "Connexion...",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signUp": "S'inscrire",
+    "success": "Connexion réussie !",
+    "error": "Échec de la connexion : {{message}}"
+  },
+  "register": {
+    "title": "Créer un Compte",
+    "subtitle": "Commencez votre aventure avec le trading automatisé.",
+    "fullNameLabel": "Nom complet",
+    "emailLabel": "Adresse e-mail",
+    "passwordLabel": "Mot de passe",
+    "submitButton": "Créer le Compte",
+    "loading": "Création du compte...",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter",
+    "success": "Compte créé ! Bienvenue à bord.",
+    "error": "Échec de l'inscription : {{message}}"
+  },
+  "profile": {
+    "title": "Profil du Compte",
+    "fullName": "Nom complet",
+    "email": "Adresse e-mail",
+    "role": "Type de compte",
+    "memberSince": "Membre depuis",
+    "subscription": "Abonnement Actuel"
+  },
+  "logout": {
+    "success": "Vous avez été déconnecté.",
+    "error": "Échec de la déconnexion. Veuillez réessayer."
+  },
+  "dashboard": {
+    "welcome": "Bon retour, {{name}} !",
+    "balance": "Solde",
+    "equity": "Capitaux Propres",
+    "profit": "P&L en Direct",
+    "freeMargin": "Marge Disponible",
+    "equityCurve": "Courbe des Capitaux",
+    "recentTrades": "Transactions Récentes"
+  },
+  "strategies": {
+    "title": "Mes Stratégies",
+    "add": "Ajouter une Nouvelle Stratégie",
+    "placeholder": "Vous n'avez encore configuré aucune stratégie. Cliquez sur 'Ajouter une Nouvelle Stratégie' pour commencer !"
+  },
+  "billing": {
+    "title": "Facturation & Abonnement",
+    "subtitle": "Choisissez un plan qui correspond à vos ambitions de trading."
+  },
+  "payment": {
+    "initiating": "Initialisation du paiement...",
+    "loading": "Traitement...",
+    "currentPlan": "Plan Actuel",
+    "choosePlan": "Choisir le Plan",
+    "error": {
+      "redirect": "Impossible de rediriger vers le fournisseur de paiement.",
+      "generic": "L'initialisation du paiement a échoué. Veuillez réessayer."
+    },
+    "success": {
+      "toast": "Paiement réussi ! Votre plan a été mis à niveau.",
+      "title": "Paiement Réussi !",
+      "subtitle": "Votre compte a été mis à niveau. Vous avez maintenant accès à toutes vos nouvelles fonctionnalités.",
+      "button": "Aller au Tableau de Bord"
+    },
+    "cancel": {
+      "title": "Paiement Annulé",
+      "subtitle": "Votre paiement n'a pas été traité. Vous pouvez réessayer depuis la page de facturation.",
+      "button": "Retour à la Facturation"
+    }
+  },
+  "tour": {
+    "step1": "Bienvenue sur votre Tableau de Bord ! C'est votre centre de contrôle pour le trading automatisé.",
+    "step2": "Ici, vous pouvez voir les métriques clés de votre compte en un coup d'œil.",
+    "step3": "Suivez la croissance des capitaux propres de votre compte au fil du temps avec ce graphique.",
+    "step4": "Vos transactions les plus récentes apparaîtront ici en temps réel.",
+    "strategies": {
+      "step1": "Cliquez ici pour créer votre première stratégie de trading automatisé.",
+      "step2": "Configurez votre stratégie ici. Choisissez un type, un symbole, et ajustez les paramètres à votre style.",
+      "step3": "Une fois créée, vous pouvez activer ou désactiver votre stratégie à tout moment avec ce bouton."
+    }
+  }
+}

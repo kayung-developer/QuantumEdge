@@ -1,0 +1,102 @@
+{
+  "sidebar": {
+    "dashboard": "Kojelauta",
+    "strategies": "Strategiat",
+    "billing": "Laskutus & Sopimukset",
+    "adminDashboard": "Ylläpidon Kojelauta",
+    "userManagement": "Käyttäjähallinta",
+    "payments": "Maksut"
+  },
+  "header": {
+    "profile": "Oma Profiili",
+    "billing": "Laskutus",
+    "logout": "Kirjaudu Ulos"
+  },
+  "login": {
+    "title": "Tervetuloa Takaisin!",
+    "subtitle": "Kirjaudu sisään päästäksesi kaupankäynnin kojelautaan.",
+    "emailLabel": "Sähköpostiosoite",
+    "passwordLabel": "Salasana",
+    "submitButton": "Kirjaudu Sisään",
+    "loading": "Kirjaudutaan...",
+    "noAccount": "Eikö sinulla ole tiliä?",
+    "signUp": "Rekisteröidy",
+    "success": "Kirjautuminen onnistui!",
+    "error": "Kirjautuminen epäonnistui: {{message}}"
+  },
+  "register": {
+    "title": "Luo Tili",
+    "subtitle": "Aloita matkasi automatisoidussa kaupankäynnissä.",
+    "fullNameLabel": "Koko nimi",
+    "emailLabel": "Sähköpostiosoite",
+    "passwordLabel": "Salasana",
+    "submitButton": "Luo Tili",
+    "loading": "Luodaan tiliä...",
+    "hasAccount": "Onko sinulla jo tili?",
+    "signIn": "Kirjaudu sisään",
+    "success": "Tili luotu! Tervetuloa mukaan.",
+    "error": "Rekisteröinti epäonnistui: {{message}}"
+  },
+  "profile": {
+    "title": "Tilin Profiili",
+    "fullName": "Koko nimi",
+    "email": "Sähköpostiosoite",
+    "role": "Tilin tyyppi",
+    "memberSince": "Jäsen",
+    "subscription": "Nykyinen Tilaus"
+  },
+  "logout": {
+    "success": "Olet kirjautunut ulos.",
+    "error": "Uloskirjautuminen epäonnistui. Yritä uudelleen."
+  },
+  "dashboard": {
+    "welcome": "Tervetuloa takaisin, {{name}}!",
+    "balance": "Saldo",
+    "equity": "Oma Pääoma",
+    "profit": "Live Tulos",
+    "freeMargin": "Vapaa Vakuus",
+    "equityCurve": "Oman Pääoman Kehitys",
+    "recentTrades": "Viimeisimmät Kaupat"
+  },
+  "strategies": {
+    "title": "Omat Strategiat",
+    "add": "Lisää Uusi Strategia",
+    "placeholder": "Et ole vielä määrittänyt strategioita. Aloita napsauttamalla 'Lisää Uusi Strategia'!"
+  },
+  "billing": {
+    "title": "Laskutus & Tilaus",
+    "subtitle": "Valitse sopimus, joka vastaa kaupankäyntitavoitteitasi."
+  },
+  "payment": {
+    "initiating": "Aloitetaan maksua...",
+    "loading": "Käsitellään...",
+    "currentPlan": "Nykyinen Sopimus",
+    "choosePlan": "Valitse Sopimus",
+    "error": {
+      "redirect": "Maksupalveluun ei voitu ohjata.",
+      "generic": "Maksun aloitus epäonnistui. Yritä uudelleen."
+    },
+    "success": {
+      "toast": "Maksu onnistui! Sopimuksesi on päivitetty.",
+      "title": "Maksu Onnistui!",
+      "subtitle": "Tilisi on päivitetty. Sinulla on nyt pääsy kaikkiin uusiin ominaisuuksiin.",
+      "button": "Siirry Kojelautaan"
+    },
+    "cancel": {
+      "title": "Maksu Peruttu",
+      "subtitle": "Maksuasi ei käsitelty. Voit yrittää uudelleen laskutussivulta.",
+      "button": "Palaa Laskutukseen"
+    }
+  },
+  "tour": {
+    "step1": "Tervetuloa Kojelautaasi! Tämä on automatisoidun kaupankäynnin komentokeskuksesi.",
+    "step2": "Täältä näet tilisi avainluvut yhdellä silmäyksellä.",
+    "step3": "Seuraa tilisi oman pääoman kasvua ajan myötä tällä kaaviolla.",
+    "step4": "Viimeisimmät kauppasi ilmestyvät tänne reaaliajassa.",
+    "strategies": {
+      "step1": "Luo ensimmäinen automatisoitu kaupankäyntistrategiasi napsauttamalla tästä.",
+      "step2": "Määritä strategiasi täällä. Valitse tyyppi, symboli ja säädä parametrit tyylisi mukaan.",
+      "step3": "Kun strategia on luotu, voit aktivoida tai deaktivoida sen milloin tahansa tällä kytkimellä."
+    }
+  }
+}

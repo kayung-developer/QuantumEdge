@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar for a more modern look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #718096;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2d3748;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Custom styles for Recharts Tooltip */
+.recharts-tooltip-wrapper {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.dark .recharts-tooltip-wrapper {
+  background-color: rgba(22, 27, 34, 0.9) !important;
+  border-color: #30363d !important;
+  color: #c9d1d9 !important;
+}
+
+/* Custom styles for React Joyride */
+.react-joyride__tooltip {
+  background-color: #ffffff !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.dark .react-joyride__tooltip {
+  background-color: #161B22 !important;
+  color: #C9D1D9 !important;
+}
+
+.react-joyride__spotlight {
+  border-radius: 0.5rem !important;
+}
+
+/* Glassmorphism Card Style */
+@layer components {
+  .glass-card {
+    @apply bg-white/30 dark:bg-dark-card/30 backdrop-blur-xl border border-white/20 dark:border-dark-border/20 rounded-2xl shadow-lg;
+  }
+}
+
+/* Aurora Background for Auth Pages */
+.aurora-background {
+  background-size: 400% 400%;
+  animation: aurora 15s ease infinite;
+}

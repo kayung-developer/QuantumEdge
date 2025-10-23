@@ -1,0 +1,102 @@
+{
+  "sidebar": {
+    "dashboard": "仪表板",
+    "strategies": "策略",
+    "billing": "账单与计划",
+    "adminDashboard": "管理员仪表板",
+    "userManagement": "用户管理",
+    "payments": "支付记录"
+  },
+  "header": {
+    "profile": "我的个人资料",
+    "billing": "账单",
+    "logout": "登出"
+  },
+  "login": {
+    "title": "欢迎回来！",
+    "subtitle": "登录以访问您的交易仪表板。",
+    "emailLabel": "电子邮件地址",
+    "passwordLabel": "密码",
+    "submitButton": "登录",
+    "loading": "登录中...",
+    "noAccount": "没有账户？",
+    "signUp": "注册",
+    "success": "登录成功！",
+    "error": "登录失败：{{message}}"
+  },
+  "register": {
+    "title": "创建账户",
+    "subtitle": "开始您的自动化交易之旅。",
+    "fullNameLabel": "全名",
+    "emailLabel": "电子邮件地址",
+    "passwordLabel": "密码",
+    "submitButton": "创建账户",
+    "loading": "创建账户中...",
+    "hasAccount": "已经有账户了？",
+    "signIn": "登录",
+    "success": "账户已创建！欢迎使用。",
+    "error": "注册失败：{{message}}"
+  },
+  "profile": {
+    "title": "账户资料",
+    "fullName": "全名",
+    "email": "电子邮件地址",
+    "role": "账户类型",
+    "memberSince": "成为会员自",
+    "subscription": "当前订阅"
+  },
+  "logout": {
+    "success": "您已成功登出。",
+    "error": "登出失败。请重试。"
+  },
+  "dashboard": {
+    "welcome": "欢迎回来，{{name}}！",
+    "balance": "余额",
+    "equity": "净值",
+    "profit": "实时盈亏",
+    "freeMargin": "可用保证金",
+    "equityCurve": "净值曲线",
+    "recentTrades": "最近交易"
+  },
+  "strategies": {
+    "title": "我的策略",
+    "add": "添加新策略",
+    "placeholder": "您尚未配置任何策略。点击“添加新策略”开始吧！"
+  },
+  "billing": {
+    "title": "账单与订阅",
+    "subtitle": "选择一个适合您交易雄心的计划。"
+  },
+  "payment": {
+    "initiating": "正在发起支付...",
+    "loading": "处理中...",
+    "currentPlan": "当前计划",
+    "choosePlan": "选择计划",
+    "error": {
+      "redirect": "无法重定向到支付提供商。",
+      "generic": "支付发起失败。请重试。"
+    },
+    "success": {
+      "toast": "支付成功！您的计划已升级。",
+      "title": "支付成功！",
+      "subtitle": "您的账户已升级。您现在可以使用所有新功能。",
+      "button": "前往仪表板"
+    },
+    "cancel": {
+      "title": "支付已取消",
+      "subtitle": "您的支付未被处理。您可以从账单页面重试。",
+      "button": "返回账单"
+    }
+  },
+  "tour": {
+    "step1": "欢迎来到您的仪表板！这是您自动化交易的控制中心。",
+    "step2": "在这里您可以一目了然地看到您账户的关键指标。",
+    "step3": "通过此图表跟踪您账户净值的长期增长情况。",
+    "step4": "您最近的交易将实时显示在这里。",
+    "strategies": {
+      "step1": "点击这里创建您的第一个自动化交易策略。",
+      "step2": "在此配置您的策略。选择类型、交易品种，并根据您的风格调整参数。",
+      "step3": "创建后，您可以随时使用此开关激活或停用您的策略。"
+    }
+  }
+}

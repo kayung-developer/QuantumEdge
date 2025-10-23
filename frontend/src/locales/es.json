@@ -1,0 +1,102 @@
+{
+  "sidebar": {
+    "dashboard": "Panel",
+    "strategies": "Estrategias",
+    "billing": "Facturación y Planes",
+    "adminDashboard": "Panel de Administrador",
+    "userManagement": "Gestión de Usuarios",
+    "payments": "Pagos"
+  },
+  "header": {
+    "profile": "Mi Perfil",
+    "billing": "Facturación",
+    "logout": "Cerrar Sesión"
+  },
+  "login": {
+    "title": "¡Bienvenido de Nuevo!",
+    "subtitle": "Inicia sesión para acceder a tu panel de trading.",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "submitButton": "Iniciar Sesión",
+    "loading": "Iniciando sesión...",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate",
+    "success": "¡Sesión iniciada con éxito!",
+    "error": "Error de inicio de sesión: {{message}}"
+  },
+  "register": {
+    "title": "Crear una Cuenta",
+    "subtitle": "Comienza tu viaje con el trading automatizado.",
+    "fullNameLabel": "Nombre completo",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "submitButton": "Crear Cuenta",
+    "loading": "Creando cuenta...",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "success": "¡Cuenta creada! Bienvenido a bordo.",
+    "error": "Fallo en el registro: {{message}}"
+  },
+  "profile": {
+    "title": "Perfil de la Cuenta",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "role": "Tipo de cuenta",
+    "memberSince": "Miembro desde",
+    "subscription": "Suscripción Actual"
+  },
+  "logout": {
+    "success": "Has cerrado la sesión.",
+    "error": "Fallo al cerrar sesión. Por favor, inténtalo de nuevo."
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido de nuevo, {{name}}!",
+    "balance": "Balance",
+    "equity": "Equidad",
+    "profit": "P&L en Vivo",
+    "freeMargin": "Margen Libre",
+    "equityCurve": "Curva de Equidad",
+    "recentTrades": "Operaciones Recientes"
+  },
+  "strategies": {
+    "title": "Mis Estrategias",
+    "add": "Añadir Nueva Estrategia",
+    "placeholder": "Aún no has configurado ninguna estrategia. ¡Haz clic en 'Añadir Nueva Estrategia' para comenzar!"
+  },
+  "billing": {
+    "title": "Facturación y Suscripción",
+    "subtitle": "Elige un plan que se ajuste a tus ambiciones de trading."
+  },
+  "payment": {
+    "initiating": "Iniciando pago...",
+    "loading": "Procesando...",
+    "currentPlan": "Plan Actual",
+    "choosePlan": "Elegir Plan",
+    "error": {
+      "redirect": "No se pudo redirigir al proveedor de pagos.",
+      "generic": "Falló la iniciación del pago. Por favor, inténtalo de nuevo."
+    },
+    "success": {
+      "toast": "¡Pago exitoso! Tu plan ha sido actualizado.",
+      "title": "¡Pago Exitoso!",
+      "subtitle": "Tu cuenta ha sido actualizada. Ahora tienes acceso a todas tus nuevas funciones.",
+      "button": "Ir al Panel"
+    },
+    "cancel": {
+      "title": "Pago Cancelado",
+      "subtitle": "Tu pago no fue procesado. Puedes intentarlo de nuevo desde la página de facturación.",
+      "button": "Volver a Facturación"
+    }
+  },
+  "tour": {
+    "step1": "¡Bienvenido a tu Panel! Este es tu centro de control para el trading automatizado.",
+    "step2": "Aquí puedes ver las métricas clave de tu cuenta de un vistazo.",
+    "step3": "Sigue el crecimiento de la equidad de tu cuenta a lo largo del tiempo con este gráfico.",
+    "step4": "Tus operaciones más recientes aparecerán aquí en tiempo real.",
+    "strategies": {
+      "step1": "Haz clic aquí para crear tu primera estrategia de trading automatizado.",
+      "step2": "Configura tu estrategia aquí. Elige un tipo, símbolo y ajusta los parámetros a tu estilo.",
+      "step3": "Una vez creada, puedes activar o desactivar tu estrategia en cualquier momento con este interruptor."
+    }
+  }
+}

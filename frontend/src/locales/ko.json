@@ -1,0 +1,102 @@
+{
+  "sidebar": {
+    "dashboard": "대시보드",
+    "strategies": "전략",
+    "billing": "결제 및 플랜",
+    "adminDashboard": "관리자 대시보드",
+    "userManagement": "사용자 관리",
+    "payments": "결제 내역"
+  },
+  "header": {
+    "profile": "내 프로필",
+    "billing": "결제",
+    "logout": "로그아웃"
+  },
+  "login": {
+    "title": "다시 오신 것을 환영합니다!",
+    "subtitle": "거래 대시보드에 액세스하려면 로그인하세요.",
+    "emailLabel": "이메일 주소",
+    "passwordLabel": "비밀번호",
+    "submitButton": "로그인",
+    "loading": "로그인 중...",
+    "noAccount": "계정이 없으신가요?",
+    "signUp": "가입하기",
+    "success": "성공적으로 로그인했습니다!",
+    "error": "로그인 실패: {{message}}"
+  },
+  "register": {
+    "title": "계정 생성",
+    "subtitle": "자동화된 거래의 여정을 시작하세요.",
+    "fullNameLabel": "전체 이름",
+    "emailLabel": "이메일 주소",
+    "passwordLabel": "비밀번호",
+    "submitButton": "계정 생성",
+    "loading": "계정 생성 중...",
+    "hasAccount": "이미 계정이 있으신가요?",
+    "signIn": "로그인",
+    "success": "계정이 생성되었습니다! 환영합니다.",
+    "error": "가입 실패: {{message}}"
+  },
+  "profile": {
+    "title": "계정 프로필",
+    "fullName": "전체 이름",
+    "email": "이메일 주소",
+    "role": "계정 유형",
+    "memberSince": "가입일",
+    "subscription": "현재 구독"
+  },
+  "logout": {
+    "success": "로그아웃되었습니다.",
+    "error": "로그아웃에 실패했습니다. 다시 시도해 주세요."
+  },
+  "dashboard": {
+    "welcome": "{{name}}님, 다시 오신 것을 환영합니다!",
+    "balance": "잔액",
+    "equity": "순자산",
+    "profit": "실시간 손익",
+    "freeMargin": "사용 가능 증거금",
+    "equityCurve": "순자산 곡선",
+    "recentTrades": "최근 거래"
+  },
+  "strategies": {
+    "title": "나의 전략",
+    "add": "새 전략 추가",
+    "placeholder": "아직 설정된 전략이 없습니다. '새 전략 추가'를 클릭하여 시작하세요!"
+  },
+  "billing": {
+    "title": "결제 및 구독",
+    "subtitle": "귀하의 거래 목표에 맞는 플랜을 선택하세요."
+  },
+  "payment": {
+    "initiating": "결제 시작 중...",
+    "loading": "처리 중...",
+    "currentPlan": "현재 플랜",
+    "choosePlan": "플랜 선택",
+    "error": {
+      "redirect": "결제 제공업체로 리디렉션할 수 없습니다.",
+      "generic": "결제 시작에 실패했습니다. 다시 시도해 주세요."
+    },
+    "success": {
+      "toast": "결제 성공! 플랜이 업그레이드되었습니다.",
+      "title": "결제 성공!",
+      "subtitle": "귀하의 계정이 업그레이드되었습니다. 이제 모든 새로운 기능을 이용할 수 있습니다.",
+      "button": "대시보드로 가기"
+    },
+    "cancel": {
+      "title": "결제 취소됨",
+      "subtitle": "결제가 처리되지 않았습니다. 결제 페이지에서 다시 시도할 수 있습니다.",
+      "button": "결제로 돌아가기"
+    }
+  },
+  "tour": {
+    "step1": "대시보드에 오신 것을 환영합니다! 여기는 자동화된 거래를 위한 관제 센터입니다.",
+    "step2": "여기서 계정의 주요 지표를 한눈에 볼 수 있습니다.",
+    "step3": "이 차트로 시간 경과에 따른 계정의 순자산 성장을 추적하세요.",
+    "step4": "가장 최근의 거래가 여기에 실시간으로 표시됩니다.",
+    "strategies": {
+      "step1": "여기를 클릭하여 첫 번째 자동 거래 전략을 만드세요.",
+      "step2": "여기서 전략을 구성하세요. 유형, 심볼을 선택하고 스타일에 맞게 매개변수를 조정하세요.",
+      "step3": "생성 후, 이 토글로 언제든지 전략을 활성화하거나 비활성화할 수 있습니다."
+    }
+  }
+}
