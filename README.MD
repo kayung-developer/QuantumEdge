@@ -6,7 +6,7 @@
 [![React](https://img.shields.io/badge/React-18+-cyan.svg)](https://reactjs.org/)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen.svg)](https://github.com/your-username/quantedge-trader)
 
-**QuantumEdge Trader** is a sophisticated, 100% real-system automated trading platform designed to interface with the MetaTrader 5 (MT5) terminal. It combines a powerful Python backend with a modern React frontend and a standalone native Windows desktop application, offering a complete suite of tools for strategy backtesting, optimization, and live automated trading.
+**QuantumEdge Trader** is a sophisticated, automated trading platform designed to interface with the MetaTrader 5 (MT5) terminal. It combines a powerful Python backend with a modern React frontend and a standalone native Windows desktop application, offering a complete suite of tools for strategy backtesting, optimization, and live automated trading.
 
 The system is architected for robustness, scalability, and professional-grade performance, utilizing advanced strategies, including AI/ML models and Smart Money Concepts.
 
@@ -142,3 +142,4 @@ python build.py
 ## ⚖️ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
